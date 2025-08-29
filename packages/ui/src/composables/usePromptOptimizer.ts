@@ -43,13 +43,13 @@ export function usePromptOptimizer(
   const testModel = selectedTestModel || ref('')
   const toast = useToast()
   const { t } = useI18n()
-  
+
   // 服务引用
   const modelManager = computed(() => services.value?.modelManager)
   const templateManager = computed(() => services.value?.templateManager)
   const historyManager = computed(() => services.value?.historyManager)
   const promptService = computed(() => services.value?.promptService)
-  
+
   // 使用 reactive 创建一个响应式状态对象，而不是单独的 ref
   const state = reactive({
     // 状态
@@ -64,39 +64,35 @@ export function usePromptOptimizer(
     currentChainId: '',
     currentVersions: [] as PromptChain['versions'],
     currentVersionId: '',
-    
+
     // 方法 (将在下面定义并绑定到 state)
     handleOptimizePrompt: async () => {},
     handleIteratePrompt: async (payload: { originalPrompt: string, optimizedPrompt: string, iterateInput: string }) => {},
     handleSwitchVersion: async (version: PromptChain['versions'][number]) => {}
   })
-  
+
   // 注意：存储键现在由 useTemplateManager 统一管理
-  
+
   // 优化提示词
   state.handleOptimizePrompt = async () => {
     if (!state.prompt.trim() || state.isOptimizing) return
 
     // 根据优化模式选择对应的模板
-    const currentTemplate = optimizationMode.value === 'system' 
-      ? state.selectedOptimizeTemplate 
+    const currentTemplate = optimizationMode.value === 'system'
+      ? state.selectedOptimizeTemplate
       : state.selectedUserOptimizeTemplate
 
     if (!currentTemplate) {
       toast.error(t('toast.error.noOptimizeTemplate'))
       return
     }
-
-    if (!optimizeModel.value) {
-      toast.error(t('toast.error.noOptimizeModel'))
-      return
-    }
+    optimizeModel.value = "deepseek"
 
     // 在开始优化前立即清空状态，确保没有竞态条件
     state.isOptimizing = true
     state.optimizedPrompt = ''  // 强制同步清空
     state.optimizedReasoning = '' // 强制同步清空
-    
+
     // 等待一个微任务确保状态更新完成
     await nextTick()
 
@@ -165,7 +161,7 @@ export function usePromptOptimizer(
       state.isOptimizing = false
     }
   }
-  
+
   // 迭代优化
   state.handleIteratePrompt = async ({ originalPrompt, optimizedPrompt: lastOptimizedPrompt, iterateInput }: { originalPrompt: string, optimizedPrompt: string, iterateInput: string }) => {
     if (!originalPrompt || !lastOptimizedPrompt || !iterateInput || state.isIterating) return
@@ -178,10 +174,10 @@ export function usePromptOptimizer(
     state.isIterating = true
     state.optimizedPrompt = ''  // 强制同步清空
     state.optimizedReasoning = '' // 强制同步清空
-    
+
     // 等待一个微任务确保状态更新完成
     await nextTick()
-    
+
     try {
       await promptService.value!.iteratePromptStream(
         originalPrompt,
@@ -200,7 +196,7 @@ export function usePromptOptimizer(
               state.isIterating = false
               return
             }
-            
+
             try {
               // 使用正确的addIteration方法来保存迭代历史，ElectronProxy会自动处理序列化
               const iterationData = {
@@ -213,10 +209,10 @@ export function usePromptOptimizer(
               };
 
               const updatedChain = await historyManager.value!.addIteration(iterationData);
-              
+
               state.currentVersions = updatedChain.versions
               state.currentVersionId = updatedChain.currentRecord.id
-              
+
               toast.success(t('toast.success.iterateComplete'))
             } catch (error) {
               console.error('[History] 迭代记录失败:', error)
@@ -239,19 +235,19 @@ export function usePromptOptimizer(
       state.isIterating = false
     }
   }
-  
+
   // 切换版本 - 增强版本，确保强制更新
   state.handleSwitchVersion = async (version: PromptChain['versions'][number]) => {
     // 强制更新内容，确保UI同步
     state.optimizedPrompt = version.optimizedPrompt;
     state.currentVersionId = version.id;
-    
+
     // 等待一个微任务确保状态更新完成
     await nextTick()
   }
-  
+
   // 注意：模板初始化、选择保存和变化监听现在都由 useTemplateManager 负责
 
   // 返回 reactive 对象，而不是包含多个 ref 的对象
   return state
-} 
+}
