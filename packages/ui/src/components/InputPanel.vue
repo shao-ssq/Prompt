@@ -32,11 +32,11 @@
     <!-- 控制面板 -->
     <div class="flex items-center gap-2">
       <!-- 模型选择 -->
-      <div class="min-w-[120px] w-fit shrink-0">
-        <label class="block text-sm theme-label mb-1.5">{{ modelLabel }}</label>
-        <slot name="model-select"></slot>
-      </div>
-      
+<!--      <div class="min-w-[120px] w-fit shrink-0">-->
+<!--        <label class="block text-sm theme-label mb-1.5">{{ modelLabel }}</label>-->
+<!--        <slot name="model-select"></slot>-->
+<!--      </div>-->
+
       <!-- 提示词模板选择 -->
       <div v-if="templateLabel" class="flex-1 min-w-0">
         <label class="block text-sm theme-label mb-1.5 truncate">{{ templateLabel }}</label>
@@ -59,7 +59,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- 全屏弹窗 -->
   <FullscreenDialog v-model="isFullscreen" :title="label">
     <div class="h-full flex flex-col">

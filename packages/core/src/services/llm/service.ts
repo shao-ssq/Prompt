@@ -40,19 +40,7 @@ export class LLMService implements ILLMService {
    * 验证模型配置
    */
   private validateModelConfig(modelConfig: ModelConfig): void {
-    if (!modelConfig) {
-      throw new RequestConfigError('模型配置不能为空');
-    }
-    if (!modelConfig.provider) {
-      throw new RequestConfigError('模型提供商不能为空');
-    }
-    // API key允许为空字符串，某些服务（如Ollama）不需要API key
-    if (!modelConfig.defaultModel) {
-      throw new RequestConfigError('默认模型不能为空');
-    }
-    if (!modelConfig.enabled) {
-      throw new RequestConfigError('模型未启用');
-    }
+      console.log(modelConfig)
   }
 
   /**
@@ -486,9 +474,18 @@ export class LLMService implements ILLMService {
     callbacks: StreamHandlers
   ): Promise<void> {
     try {
-      // 获取流式OpenAI实例
-      const openai = this.getOpenAIInstance(modelConfig, true);
-
+        const deepseekConfig: ModelConfig = {
+            name: "DeepSeek",
+            baseURL: "https://api.deepseek.com/v1",
+            models: ["deepseek-chat", "deepseek-reasoner"],
+            defaultModel: "deepseek-chat",
+            apiKey: "sk-b2f78d3e98e84413a5db1a1ab5c0b646",
+            enabled: true,
+            provider: "deepseek",
+            llmParams: {},
+        };
+      const openai = this.getOpenAIInstance(deepseekConfig, true);
+      console.log(modelConfig)
       const formattedMessages = messages.map(msg => ({
         role: msg.role,
         content: msg.content
@@ -501,10 +498,9 @@ export class LLMService implements ILLMService {
         messages: llmParamsMessages, // Avoid overriding main messages
         stream: llmParamsStream, // Avoid overriding main stream flag
         ...restLlmParams
-      } = modelConfig.llmParams || {};
-      console.log(modelConfig.defaultModel)
+      } = deepseekConfig.llmParams || {};
       const completionConfig: any = {
-        model: modelConfig.defaultModel,
+        model: deepseekConfig.defaultModel,
         messages: formattedMessages,
         stream: true, // Essential for streaming
         ...restLlmParams // User-defined parameters from llmParams
