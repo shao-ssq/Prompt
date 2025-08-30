@@ -3,8 +3,7 @@
     <!-- 标题和按钮区域 -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-3 flex-none">
       <div class="flex items-center gap-3 flex-wrap">
-        <h3 class="text-lg font-semibold theme-text">{{ t('prompt.optimized') }}</h3>
-        <div v-if="versions && versions.length > 0" 
+        <div v-if="versions && versions.length > 0"
              class="flex items-center gap-1 version-container"
              style="position: relative;">
           <button
@@ -33,7 +32,7 @@
         </button>
       </div>
     </div>
-    
+
     <!-- 内容区域：使用 OutputDisplay 组件 -->
     <div class="flex-1 min-h-0">
       <OutputDisplay
@@ -60,7 +59,7 @@
       <template #title>
         {{ templateTitleText }}
       </template>
-      
+
       <div class="space-y-4">
         <div>
           <h4 class="theme-label mb-2">{{ templateSelectText }}</h4>
@@ -74,7 +73,7 @@
             @manage="$emit('openTemplateManager', templateType)"
           />
         </div>
-        
+
         <div>
           <h4 class="theme-label mb-2">{{ t('prompt.iterateDirection') }}</h4>
           <textarea
@@ -85,7 +84,7 @@
           ></textarea>
         </div>
       </div>
-      
+
       <template #footer>
         <button
           @click="cancelIterate"
@@ -203,9 +202,9 @@ const previousVersionText = computed(() => {
   if (!props.versions || props.versions.length === 0) {
     return props.originalPrompt || ''
   }
-  
+
   const currentIndex = props.versions.findIndex(v => v.id === props.currentVersionId)
-  
+
   if (currentIndex > 0) {
     // 当前版本有上一版本
     return props.versions[currentIndex - 1].optimizedPrompt
@@ -237,13 +236,13 @@ const submitIterate = () => {
     toast.error(t('prompt.error.noTemplate'))
     return
   }
-  
+
   emit('iterate', {
     originalPrompt: props.originalPrompt,
     optimizedPrompt: props.optimizedPrompt,
     iterateInput: iterateInput.value.trim()
   })
-  
+
   // 重置输入
   iterateInput.value = ''
   showIterateInput.value = false
@@ -252,18 +251,18 @@ const submitIterate = () => {
 // 添加版本切换函数
 const switchVersion = async (version: PromptRecord) => {
   if (version.id === props.currentVersionId) return
-  
+
   // 发出版本切换事件
   emit('switchVersion', version)
-  
+
   // 等待父组件更新内容
   await nextTick()
-  
+
   // 强制刷新OutputDisplay的内容
   if (outputDisplayRef.value) {
     outputDisplayRef.value.forceRefreshContent()
   }
-  
+
   console.log('[PromptPanel] 版本切换完成，强制刷新内容:', {
     versionId: version.id,
     version: version.version

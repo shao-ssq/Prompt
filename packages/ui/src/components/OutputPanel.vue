@@ -5,7 +5,7 @@
       <h3 v-if="resultTitle" class="text-lg font-semibold theme-text truncate">{{ resultTitle }}</h3>
       <div v-else-if="!hideTitle" class="text-lg font-semibold theme-text">{{ t('output.title') }}</div>
       <div v-else></div>
-      
+
       <div class="flex items-center space-x-2">
         <button
           v-if="contentTokens.length > 0 && !isStreaming"
@@ -128,7 +128,7 @@ watch(() => props.result, (newVal) => {
 // 更新文本
 const updateContent = (text: string) => {
   contentTokens.value.push(text)
-  
+
   // 通知内容变化，触发高度检查
   onContentChange()
 };
@@ -143,7 +143,7 @@ let selfUpdate = false;
 const handleStream = (): StreamHandlers => {
   isStreaming.value = true;
   contentTokens.value = [];
-  
+
   return {
     onToken: (token: string) => {
       // 直接更新内容
@@ -152,7 +152,7 @@ const handleStream = (): StreamHandlers => {
     onComplete: () => {
       const finalContent = contentTokens.value.join(''); // 保存一份最终内容
       isStreaming.value = false;
-      
+
       // 流式响应结束后，确保内容完全可见
       nextTick(() => {
         forceScrollToBottom()
@@ -174,7 +174,7 @@ const handleStream = (): StreamHandlers => {
   };
 };
 
-defineExpose({ 
+defineExpose({
   handleStream,
   contentTokens,
   displayContent,
@@ -186,11 +186,11 @@ defineExpose({
 // 复制选中的文本，如果没有选中则复制全部
 const copySelectedText = async () => {
   if (!resultContainer.value) return
-  
+
   const selection = window.getSelection()
   const selectedText = selection?.toString() || ''
   const textToCopy = selectedText || displayContent.value
-  
+
   copyText(textToCopy)
 }
 </script>

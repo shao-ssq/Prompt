@@ -476,10 +476,10 @@ export class LLMService implements ILLMService {
     try {
         const deepseekConfig: ModelConfig = {
             name: "DeepSeek",
-            baseURL: "https://api.deepseek.com/v1",
-            models: ["deepseek-chat", "deepseek-reasoner"],
-            defaultModel: "deepseek-chat",
-            apiKey: "sk-b2f78d3e98e84413a5db1a1ab5c0b646",
+            baseURL: "http://172.21.3.56:8288/v1",
+            models: ["qwen3-coder-480b-a35b"],
+            defaultModel: "qwen3-coder-480b-a35b",
+            apiKey: "sk-2ATS_DZuOdhxw-MhO0M_4w",
             enabled: true,
             provider: "deepseek",
             llmParams: {},
