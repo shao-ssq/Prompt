@@ -23,8 +23,8 @@
               <span class="hidden md:inline">{{ t('templateManager.syntaxGuide') }}</span>
             </button>
             <!-- Built-in Template Language Switch -->
-            <BuiltinTemplateLanguageSwitch 
-              @language-changed="handleLanguageChanged" 
+            <BuiltinTemplateLanguageSwitch
+              @language-changed="handleLanguageChanged"
             />
           </div>
           <div class="flex items-center space-x-4">
@@ -70,20 +70,20 @@
               <span>{{ t('templateManager.userOptimizeTemplates') }}</span>
             </div>
           </button>
-          <button
-            @click="currentCategory = 'iterate'"
-            :class="[
-              'flex-1 font-medium transition-all duration-200 text-sm',
-              currentCategory === 'iterate'
-                ? 'theme-manager-button-primary'
-                : 'theme-manager-button-secondary'
-            ]"
-          >
-            <div class="flex items-center justify-center space-x-2">
-              <span class="text-lg">🔄</span>
-              <span>{{ t('templateManager.iterateTemplates') }}</span>
-            </div>
-          </button>
+<!--          <button-->
+<!--            @click="currentCategory = 'iterate'"-->
+<!--            :class="[-->
+<!--              'flex-1 font-medium transition-all duration-200 text-sm',-->
+<!--              currentCategory === 'iterate'-->
+<!--                ? 'theme-manager-button-primary'-->
+<!--                : 'theme-manager-button-secondary'-->
+<!--            ]"-->
+<!--          >-->
+<!--            <div class="flex items-center justify-center space-x-2">-->
+<!--              <span class="text-lg">🔄</span>-->
+<!--              <span>{{ t('templateManager.iterateTemplates') }}</span>-->
+<!--            </div>-->
+<!--          </button>-->
         </div>
 
         <!-- 提示词列表 -->
@@ -105,10 +105,10 @@
               {{ t('templateManager.addTemplate') }}
             </button>
           </div>
-          
+
           <!-- 提示词列表按类型过滤 -->
           <div class="space-y-4 max-h-[60vh] overflow-y-auto p-2">
-            <div 
+            <div
               v-for="template in filteredTemplates"
               :key="template.id"
               class="theme-manager-card p-4 group relative transition-all duration-300 ease-in-out"
@@ -206,18 +206,18 @@
                   </button>
                 </div>
               </div>
-              <div 
+              <div
                 class="absolute top-0 left-0 w-2 h-full rounded-l-xl"
                 :class="template.metadata.templateType === 'optimize' ? 'theme-manager-card-optimize' : 'theme-manager-card-iterate'"
               ></div>
               <div class="mt-2">
-                <span 
+                <span
                   class="theme-manager-tag ml-1 min-w-[48px]"
                 >
                   {{ template.isBuiltin ? t('common.builtin') : t('common.custom') }}
                 </span>
                 <!-- 模板类型标签 -->
-                <span 
+                <span
                   class="theme-manager-tag ml-2"
                   :class="TemplateProcessor.isSimpleTemplate(template) ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-purple-100 text-purple-700 border-purple-200'"
                 >
@@ -237,11 +237,11 @@
         <!-- 使用 Teleport 将模态框传送到 body -->
         <Teleport to="body">
           <!-- 查看/编辑模态框 -->
-          <div v-if="showAddForm || editingTemplate || viewingTemplate" 
+          <div v-if="showAddForm || editingTemplate || viewingTemplate"
                class="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto py-4"
                @click="onEditModalBackdropClick">
             <div class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
-            
+
             <div class="relative theme-manager-container w-full max-w-4xl mx-4 my-4 max-h-[calc(100vh-2rem)] overflow-y-auto z-10">
               <div class="p-6 space-y-6">
                 <div class="flex items-center justify-between">
@@ -252,15 +252,15 @@
                         : (editingTemplate ? t('template.edit') : t('template.add')) }}
                     </h3>
                     <!-- 在查看或编辑时显示模板类型 -->
-                    <span 
+                    <span
                       v-if="viewingTemplate || editingTemplate"
                       class="px-2 py-1 rounded text-xs font-medium"
-                      :class="(viewingTemplate || editingTemplate) && TemplateProcessor.isSimpleTemplate((viewingTemplate || editingTemplate)!) 
-                        ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                      :class="(viewingTemplate || editingTemplate) && TemplateProcessor.isSimpleTemplate((viewingTemplate || editingTemplate)!)
+                        ? 'bg-blue-100 text-blue-700 border border-blue-200'
                         : 'bg-purple-100 text-purple-700 border border-purple-200'"
                     >
-                      {{ (viewingTemplate || editingTemplate) && TemplateProcessor.isSimpleTemplate((viewingTemplate || editingTemplate)!) 
-                        ? '📝 ' + t('templateManager.simpleTemplate') 
+                      {{ (viewingTemplate || editingTemplate) && TemplateProcessor.isSimpleTemplate((viewingTemplate || editingTemplate)!)
+                        ? '📝 ' + t('templateManager.simpleTemplate')
                         : '⚡ ' + t('templateManager.advancedTemplate') }}
                     </span>
                   </div>
@@ -406,7 +406,7 @@
                               v-model="message.content"
                               :readonly="!!viewingTemplate"
                               class="theme-manager-input font-mono text-sm w-full resize-y message-content-textarea"
-                              :style="{ 
+                              :style="{
                                 minHeight: '80px',
                                 height: '120px'
                               }"
@@ -456,7 +456,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- Template Preview -->
                   <div v-if="form.isAdvanced && form.messages.length > 0">
                     <label class="block text-sm font-medium theme-manager-text mb-2">{{ t('templateManager.preview') }}</label>
@@ -878,7 +878,7 @@ const generateUniqueTemplateId = (baseName = 'template') => {
   const timestamp = Date.now()
   const random = Math.random().toString(36).slice(2, 8)
   let candidateId = `${baseName}-${timestamp}-${random}`
-  
+
   // 确保ID不与现有模板冲突
   const existingIds = templates.value.map(t => t.id)
   let counter = 1
@@ -886,7 +886,7 @@ const generateUniqueTemplateId = (baseName = 'template') => {
     candidateId = `${baseName}-${timestamp}-${random}-${counter}`
     counter++
   }
-  
+
   return candidateId
 }
 
@@ -918,16 +918,16 @@ const moveMessage = (index: number, direction: number) => {
 // 初始化textarea高度 - 只在打开时调用一次
 const initializeTextareaHeight = (textarea: HTMLTextAreaElement) => {
   if (!textarea || (textarea as any)._initialized) return
-  
+
   try {
     const minHeight = 80
     const maxHeight = 280
-    
+
     // 临时设置为auto获取内容高度
     const originalHeight = textarea.style.height
     textarea.style.height = 'auto'
     const scrollHeight = textarea.scrollHeight
-    
+
     let initialHeight
     if (scrollHeight <= minHeight) {
       initialHeight = minHeight
@@ -936,7 +936,7 @@ const initializeTextareaHeight = (textarea: HTMLTextAreaElement) => {
     } else {
       initialHeight = scrollHeight
     }
-    
+
     textarea.style.height = initialHeight + 'px'
     ;(textarea as any)._initialized = true
   } catch (error) {
@@ -1085,7 +1085,7 @@ const confirmDelete = async (templateId: string) => {
       if (getSelectedTemplateId() === templateId) {
         emit('select', remainingTemplates[0] || null, getCurrentTemplateType())
       }
-      
+
       toast.success(t('template.success.deleted'))
     } catch (error) {
       console.error('删除提示词失败:', error)
@@ -1266,7 +1266,7 @@ const initializeAllTextareas = () => {
   // 延迟执行，确保DOM已更新
   nextTick(() => {
     const textareas = document.querySelectorAll<HTMLTextAreaElement>('textarea.message-content-textarea')
-    
+
     textareas.forEach(textarea => {
       // 确保textarea可见且未初始化过
       if (textarea.offsetHeight > 0 || textarea.offsetWidth > 0) {

@@ -1,37 +1,37 @@
 <template>
   <div class="flex flex-col h-full">
     <!-- 标题和按钮区域 -->
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-3 flex-none">
-      <div class="flex items-center gap-3 flex-wrap">
-        <div v-if="versions && versions.length > 0"
-             class="flex items-center gap-1 version-container"
-             style="position: relative;">
-          <button
-            v-for="version in versions.slice().reverse()"
-            :key="version.id"
-            @click="switchVersion(version)"
-            class="px-2 py-1 text-xs rounded transition-colors flex-shrink-0"
-            :class="[
-              currentVersionId === version.id
-                ? 'font-medium theme-prompt-version-selected'
-                : 'theme-prompt-version-unselected'
-            ]"
-          >
-            V{{ version.version }}
-          </button>
-        </div>
-      </div>
-      <div class="flex items-center space-x-4 flex-shrink-0">
-        <button
-          v-if="optimizedPrompt"
-          @click="handleIterate"
-          class="px-3 py-1.5 theme-button-secondary flex items-center space-x-2"
-          :disabled="isIterating"
-        >
-          <span>{{ isIterating ? t('prompt.optimizing') : t('prompt.continueOptimize') }}</span>
-        </button>
-      </div>
-    </div>
+<!--    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-3 flex-none">-->
+<!--      <div class="flex items-center gap-3 flex-wrap">-->
+<!--        <div v-if="versions && versions.length > 0"-->
+<!--             class="flex items-center gap-1 version-container"-->
+<!--             style="position: relative;">-->
+<!--          <button-->
+<!--            v-for="version in versions.slice().reverse()"-->
+<!--            :key="version.id"-->
+<!--            @click="switchVersion(version)"-->
+<!--            class="px-2 py-1 text-xs rounded transition-colors flex-shrink-0"-->
+<!--            :class="[-->
+<!--              currentVersionId === version.id-->
+<!--                ? 'font-medium theme-prompt-version-selected'-->
+<!--                : 'theme-prompt-version-unselected'-->
+<!--            ]"-->
+<!--          >-->
+<!--            V{{ version.version }}-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="flex items-center space-x-4 flex-shrink-0">-->
+<!--        <button-->
+<!--          v-if="optimizedPrompt"-->
+<!--          @click="handleIterate"-->
+<!--          class="px-3 py-1.5 theme-button-secondary flex items-center space-x-2"-->
+<!--          :disabled="isIterating"-->
+<!--        >-->
+<!--          <span>{{ isIterating ? t('prompt.optimizing') : t('prompt.continueOptimize') }}</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <!-- 内容区域：使用 OutputDisplay 组件 -->
     <div class="flex-1 min-h-0">
